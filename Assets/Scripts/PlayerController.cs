@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
     
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(CollisionDirections))]
 public class PlayerController : MonoBehaviour
 {
     public bool IsMoving { get 
@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
         private set
         {
             _isMoving = value;
-            _animator?.SetBool(AnimationStrings.IsMoving, value);
+            _animator?.SetBool(AnimationStrings.isMoving, value);
         }
     }
 
@@ -25,15 +25,17 @@ public class PlayerController : MonoBehaviour
         private set
         {
             _isRunning = value;
-            _animator?.SetBool(AnimationStrings.IsRunning, value);
+            _animator?.SetBool(AnimationStrings.isRunning, value);
         }
     }
 
     public float CurrentMoveSpeed{ get
         {
-            if(IsMoving)
+
+            if(IsMoving && !_collisionDirections.IsOnWall)
             {
-                return IsRunning ? _runSpeed : _walkSpeed;
+                
+                return _collisionDirections.IsGrounded ? (IsRunning ? _runSpeed : _walkSpeed) : _airWalkSpeed;
             }
             return 0;
         }
@@ -56,10 +58,15 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float _walkSpeed = 5f;
     [SerializeField] private float _runSpeed = 8f;
+    [SerializeField] private float _airWalkSpeed = 3f;
+
+    [SerializeField] private float _jumpImpulse = 10f;
+
     [SerializeField] private bool _isMoving = false;
     [SerializeField] private bool _isRunning = false;
 
 
+    private CollisionDirections _collisionDirections;
     private bool _isFacingRight = true;
     private Rigidbody2D _rigidBody;
     private Animator _animator;
@@ -71,6 +78,7 @@ public class PlayerController : MonoBehaviour
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        _collisionDirections = GetComponent<CollisionDirections>();
         _currentVelocity = new Vector2();
         
     }
@@ -82,12 +90,18 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _currentVelocity.Set(_moveInput.x * CurrentMoveSpeed, _rigidBody.velocity.y);
-        if(_rigidBody.velocity != _currentVelocity)
+        SetVelocity(_moveInput.x * CurrentMoveSpeed, _rigidBody.velocity.y);
+        _animator.SetFloat(AnimationStrings.yVelocity, _rigidBody.velocity.y);
+
+    }
+
+    private void SetVelocity(float xVelocity, float yVelocity)
+    {
+        _currentVelocity.Set(xVelocity, yVelocity);
+        if (_rigidBody.velocity != _currentVelocity)
         {
             _rigidBody.velocity = _currentVelocity;
         }
-
     }
 
     // Update is called once per frame
@@ -126,6 +140,16 @@ public class PlayerController : MonoBehaviour
         else if (context.canceled)
         {
             IsRunning = false;
+        }
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        //TODO check if alive
+        if(context.started && _collisionDirections.IsGrounded)
+        {
+            _animator.SetTrigger(AnimationStrings.jump);
+            SetVelocity(_rigidBody.velocity.x, _jumpImpulse);
         }
     }
 }

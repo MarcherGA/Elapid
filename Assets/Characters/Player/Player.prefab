@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7458385910187968795}
   - component: {fileID: 245709639495714617}
   - component: {fileID: 4020953821040957926}
+  - component: {fileID: 6274528031805910526}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -130,6 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _walkSpeed: 5
   _runSpeed: 8
+  _jumpImpulse: 10
   _isMoving: 0
   _isRunning: 0
 --- !u!114 &7458385910187968795
@@ -237,6 +239,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 321ef616-1e2d-4cbe-bdbc-faf7c1e80f98
     m_ActionName: Player/Run[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1320723646835460674}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnJump
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: a5773d4f-cfce-4eb6-98ab-9df8cfd18ce5
+    m_ActionName: Player/Jump[/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -295,6 +313,19 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.28090397, y: -0.23505092}
+  m_Offset: {x: 0, y: -0.23505092}
   m_Size: {x: 0.5923787, y: 1.6433723}
   m_Direction: 0
+--- !u!114 &6274528031805910526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8006964708356396343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b39f0195b9488254f9b924d61c886d23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isGrounded: 0
