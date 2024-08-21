@@ -18,8 +18,11 @@ public class CollisionDirections : MonoBehaviour
             return _isOnWall;
         } private set
         {
-            _isOnWall = value;
-            _animator.SetBool(AnimationStrings.isOnWall, value);
+            if(value != _isOnWall)
+            {
+                _isOnWall = value;
+                _animator.SetBool(AnimationStrings.isOnWall, value);
+            }
         }
     }
     public bool IsOnCeiling { get
@@ -32,6 +35,7 @@ public class CollisionDirections : MonoBehaviour
         }
     }
 
+    [SerializeField] ContactFilter2D _castFilter;
     [SerializeField] bool _isGrounded;
     [SerializeField] bool _isOnWall;
 
@@ -50,7 +54,6 @@ public class CollisionDirections : MonoBehaviour
 
     RaycastHit2D[] _ceilingHits = new RaycastHit2D[5];
 
-    ContactFilter2D _castFilter;
     private Vector2 wallCheckDirection => transform.localScale.x > 0 ? Vector2.right : Vector2.left;
 
     void Awake()
@@ -63,6 +66,11 @@ public class CollisionDirections : MonoBehaviour
     {
         IsGrounded = _collider.Cast(Vector2.down, _castFilter, _groundHits, _groundDistance) > 0;
         IsOnWall = _collider.Cast(wallCheckDirection, _castFilter, _wallHits, _wallDistance) > 0;
+        if(_isOnWall)
+        {
+            
+            Debug.Log("GameObject: " + gameObject.name + " Y: " + _wallHits[0].point.y + " X: " + _wallHits[0].point.x);
+        }
         IsOnCeiling = _collider.Cast(Vector2.up, _castFilter, _ceilingHits, _ceilingDistance) > 0;
     }
 }
