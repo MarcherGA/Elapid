@@ -15,7 +15,7 @@ public class Attack : MonoBehaviour
 
         if(damageable != null)
         {
-            _knockback.x = transform.parent.localScale.x > 0 ?  MathF.Abs(_knockback.x) : MathF.Abs(_knockback.x) * -1;
+            _knockback.x = transform.parent.localScale.x > 0 ?  Mathf.Abs(_knockback.x) : Mathf.Abs(_knockback.x) * -1;
             if(damageable.TakeDamage(_attackDamage, _knockback))
             {
                 Debug.Log(other.name + " took " + _attackDamage + " damage");
