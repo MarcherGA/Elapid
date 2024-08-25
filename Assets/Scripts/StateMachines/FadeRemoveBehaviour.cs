@@ -6,11 +6,13 @@ public class FadeRemoveBehaviour : StateMachineBehaviour
 {
 
     [SerializeField] private float _fadeTime = 0.5f;
+    [SerializeField] private float _fadeDelay = 0.5f;
 
     SpriteRenderer _spriteRenderer;
     GameObject _objToRemove;
     Color _startColor;
     float _timeElapsed = 0;
+    float _timeElapsedDelay = 0;
     float newAlpha;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -25,6 +27,12 @@ public class FadeRemoveBehaviour : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if(_timeElapsedDelay < _fadeDelay)
+        {
+            _timeElapsedDelay += Time.deltaTime;
+            return;
+        }
+        
        _timeElapsed += Time.deltaTime;
 
        newAlpha = _startColor.a * (1 - (_timeElapsed / _fadeTime));
@@ -36,22 +44,4 @@ public class FadeRemoveBehaviour : StateMachineBehaviour
            Destroy(_objToRemove);
        }
     }
-
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
-
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
 }

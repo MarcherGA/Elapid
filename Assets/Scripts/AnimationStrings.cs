@@ -8,6 +8,8 @@ internal class AnimationStrings
     internal static readonly string yVelocity = "yVelocity";
     internal static readonly string jumpTrigger = "jump";
     internal static readonly string attackTrigger = "attack";
+    internal static readonly string rangedAttackTrigger = "rangedAttack";
+
     internal static readonly string hitTrigger = "hit";
 
     internal static readonly string canMove = "canMove";
