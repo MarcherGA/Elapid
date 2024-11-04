@@ -100,6 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _healthRestored: 20
   _spinRotationSpeed: {x: 0, y: 180, z: 0}
+  _pickupSound: {fileID: 8300000, guid: 484e8c61a74f2774d900510b6b1f76c3, type: 3}
+  _volume: 0.5
 --- !u!58 &4066722132991298485
 CircleCollider2D:
   m_ObjectHideFlags: 0

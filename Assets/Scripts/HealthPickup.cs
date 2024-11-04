@@ -6,6 +6,10 @@ public class HealthPickup : MonoBehaviour
 {
     [SerializeField] private int _healthRestored = 20;
     [SerializeField] private Vector3 _spinRotationSpeed = new Vector3(0, 180, 0);
+    [SerializeField] private AudioClip _pickupSound;
+    [SerializeField] private float _volume = 0.5f;
+    
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -14,6 +18,7 @@ public class HealthPickup : MonoBehaviour
         {
             if(damageable.Heal(_healthRestored))
             {
+                AudioSource.PlayClipAtPoint(_pickupSound, transform.position, _volume);
                 Destroy(gameObject);
             }
         }
